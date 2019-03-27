@@ -49,19 +49,6 @@ $result='';
 switch ($request)
 {
     case 1:
-        $products=$db->query("SELECT * FROM `offers`")->fetch_all(MYSQLI_ASSOC);
-        $result=doTable(['ID товара','Имя товара'],$products);
-        break;
-    case 2:
-        $orderId=$_POST['order'];
-        $order=$db->query('SELECT requests.id, offers.name
-        FROM requests
-        LEFT JOIN offers
-        ON requests.offer_id=offers.id
-        WHERE requests.id='.$orderId)->fetch_all(MYSQLI_ASSOC);
-        $result=(!is_null($order) && !empty($order))?doTable(['№','Название товара'],$order):"<h1>Заказ №{$orderId} не найден </h1>";
-        break;
-    case 3:
         $orderList=$db->query("SELECT requests.id, offers.name,requests.price,requests.count,operators.fio
         FROM requests
         LEFT JOIN offers
@@ -71,7 +58,7 @@ switch ($request)
         WHERE requests.count>2 AND (requests.operator_id=10 OR requests.operator_id=12);")->fetch_all(MYSQLI_ASSOC);
         $result=doTable(['№ order','Name of product','The price of the product','Cost of goods','Surname of the manager'],$orderList);
         break;
-    case 4:
+    case 2:
         $itemOffers=$db->query("
         SELECT  offers.name AS product, SUM(requests.price*requests.count) AS 'the total amount of goods'
         FROM requests
